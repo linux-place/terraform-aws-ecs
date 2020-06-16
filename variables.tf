@@ -32,7 +32,7 @@ variable "log_bucket_name" {
   type = string
 }
 
-variable "internal" {
-  type    = bool
-  default = false
+variable "tags" {
+  type    = map
+  default = {}
 }

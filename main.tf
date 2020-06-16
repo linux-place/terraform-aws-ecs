@@ -1,5 +1,6 @@
 resource "aws_ecs_cluster" "this" {
   name = var.name
+  tags = var.tags
 }
 
 module "fargate_security_group" {
@@ -25,6 +26,7 @@ module "fargate_security_group" {
       rule = "all-all"
     },
   ]
+  tags = var.tags
 }
 
 module "private_load_balancer_sg" {
@@ -40,6 +42,8 @@ module "private_load_balancer_sg" {
       source_security_group_id = module.fargate_security_group.this_security_group_id
     },
   ]
+  tags = var.tags
+
 }
 
 
@@ -57,7 +61,7 @@ module "private_load_balancer" {
   subnets         = var.private_subnets
   security_groups = [module.private_load_balancer_sg.this_security_group_id]
   idle_timeout    = var.idle_timeout
-  internal        = var.internal
+  internal        = true
   //ip_address_type = var.ip_address_type
 
   access_logs = {
@@ -80,6 +84,8 @@ module "private_load_balancer" {
       target_group_index = 0
     }
   ]
+  tags = var.tags
+
 }
 
 module "public_load_balancer_sg" {
@@ -97,6 +103,8 @@ module "public_load_balancer_sg" {
       cidr_blocks = "0.0.0.0/0"
     },
   ]
+  tags = var.tags
+
 }
 
 module "public_load_balancer" {
@@ -113,7 +121,7 @@ module "public_load_balancer" {
   subnets         = var.public_subnets
   security_groups = [module.public_load_balancer_sg.this_security_group_id]
   idle_timeout    = var.idle_timeout
-  //internal = var.internal
+  internal        = false
   //ip_address_type = var.ip_address_type
 
   access_logs = {
@@ -136,6 +144,8 @@ module "public_load_balancer" {
       target_group_index = 0
     }
   ]
+  tags = var.tags
+
 }
 
 
@@ -185,6 +195,8 @@ resource "aws_iam_role" "ecs_role" {
   name_prefix = "ecs_role"
   # path               = "/system/"
   assume_role_policy = "${data.aws_iam_policy_document.ecs_assume_role_policy.json}"
+  tags               = var.tags
+
 }
 
 data "aws_iam_policy_document" "ecs_task_assume_role_policy" {
@@ -227,4 +239,5 @@ resource "aws_iam_role" "ecs_task_role" {
   name_prefix = "ecs_task_role"
   # path               = "/system/"
   assume_role_policy = "${data.aws_iam_policy_document.ecs_task_assume_role_policy.json}"
+  tags               = var.tags
 }
