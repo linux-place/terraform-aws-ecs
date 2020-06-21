@@ -65,7 +65,7 @@ module "private_load_balancer" {
   //ip_address_type = var.ip_address_type
 
   access_logs = {
-    bucket = var.log_bucket
+    bucket = var.log_bucket_name
   }
 
   target_groups = [
@@ -125,7 +125,7 @@ module "public_load_balancer" {
   //ip_address_type = var.ip_address_type
 
   access_logs = {
-    bucket = var.log_bucket
+    bucket = var.log_bucket_name
   }
 
   target_groups = [
@@ -241,3 +241,4 @@ resource "aws_iam_role" "ecs_task_role" {
   assume_role_policy = "${data.aws_iam_policy_document.ecs_task_assume_role_policy.json}"
   tags               = var.tags
 }
+
