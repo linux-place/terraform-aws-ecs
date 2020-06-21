@@ -51,7 +51,7 @@ module "private_load_balancer" {
   source  = "terraform-aws-modules/alb/aws"
   version = "~> 5.0"
 
-  name = "${var.name}-public-lb"
+  name = "${var.name}-private-lb"
 
   load_balancer_type = "application"
 
