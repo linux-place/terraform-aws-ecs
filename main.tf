@@ -32,7 +32,7 @@ module "fargate_security_group" {
 module "private_load_balancer_sg" {
   source      = "terraform-aws-modules/security-group/aws"
   version     = "3.10.0"
-  name        = "${var.name}-public-lb"
+  name        = "${var.name}-private-lb"
   description = "Private Load Balancer SG"
   vpc_id      = var.vpc_id
   ingress_with_source_security_group_id = [
