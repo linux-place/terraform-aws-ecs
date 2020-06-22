@@ -109,9 +109,8 @@ module "public_load_balancer_sg" {
 }
 
 module "public_load_balancer" {
-  source     = "terraform-aws-modules/alb/aws"
-  version    = "~> 5.0"
-  depends_on = [module.s3_bucket_for_logs]
+  source  = "terraform-aws-modules/alb/aws"
+  version = "~> 5.0"
 
   name = "${var.name}-public-lb"
 
