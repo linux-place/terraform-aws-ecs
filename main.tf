@@ -48,8 +48,9 @@ module "private_load_balancer_sg" {
 
 
 module "private_load_balancer" {
-  source  = "terraform-aws-modules/alb/aws"
-  version = "~> 5.0"
+  source     = "terraform-aws-modules/alb/aws"
+  version    = "~> 5.0"
+  depends_on = [module.s3_bucket_for_logs]
 
   name = "${var.name}-private-lb"
 
@@ -108,8 +109,9 @@ module "public_load_balancer_sg" {
 }
 
 module "public_load_balancer" {
-  source  = "terraform-aws-modules/alb/aws"
-  version = "~> 5.0"
+  source     = "terraform-aws-modules/alb/aws"
+  version    = "~> 5.0"
+  depends_on = [module.s3_bucket_for_logs]
 
   name = "${var.name}-public-lb"
 
@@ -242,3 +244,14 @@ resource "aws_iam_role" "ecs_task_role" {
   tags               = var.tags
 }
 
+module "s3_bucket_for_logs" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+
+  bucket = var.log_bucket_name
+  acl    = "log-delivery-write"
+
+  # Allow deletion of non-empty bucket
+  force_destroy = true
+
+  attach_elb_log_delivery_policy = true
+}
