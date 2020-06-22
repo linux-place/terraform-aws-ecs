@@ -48,9 +48,9 @@ module "private_load_balancer_sg" {
 
 
 module "private_load_balancer" {
-  source     = "terraform-aws-modules/alb/aws"
-  version    = "~> 5.0"
-  depends_on = [module.s3_bucket_for_logs]
+  source  = "terraform-aws-modules/alb/aws"
+  version = "~> 5.0"
+
 
   name = "${var.name}-private-lb"
 
@@ -66,7 +66,7 @@ module "private_load_balancer" {
   //ip_address_type = var.ip_address_type
 
   access_logs = {
-    bucket = var.log_bucket_name
+    bucket = module.s3_bucket_for_logs.this_s3_bucket_id
   }
 
   target_groups = [
@@ -127,7 +127,7 @@ module "public_load_balancer" {
   //ip_address_type = var.ip_address_type
 
   access_logs = {
-    bucket = var.log_bucket_name
+    bucket = module.s3_bucket_for_logs.this_s3_bucket_id
   }
 
   target_groups = [
