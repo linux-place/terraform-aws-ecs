@@ -5,7 +5,7 @@ resource "aws_ecs_cluster" "this" {
 
 module "fargate_security_group" {
   source      = "terraform-aws-modules/security-group/aws"
-  version     = "3.10.0"
+  version     = "3.16.0"
   name        = "${var.name}-fargate"
   description = "Fargate SG"
   vpc_id      = var.vpc_id
@@ -31,7 +31,7 @@ module "fargate_security_group" {
 
 module "private_load_balancer_sg" {
   source      = "terraform-aws-modules/security-group/aws"
-  version     = "3.10.0"
+  version     = "3.16.0"
   name        = "${var.name}-private-lb"
   description = "Private Load Balancer SG"
   vpc_id      = var.vpc_id
@@ -49,7 +49,7 @@ module "private_load_balancer_sg" {
 
 module "private_load_balancer" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 5.0"
+  version = "5.8.0"
 
 
   name = "${var.name}-private-lb"
@@ -91,7 +91,7 @@ module "private_load_balancer" {
 
 module "public_load_balancer_sg" {
   source      = "terraform-aws-modules/security-group/aws"
-  version     = "3.10.0"
+  version     = "3.16.0"
   name        = "${var.name}-public-lb"
   description = "Public Load Balancer SG"
   vpc_id      = var.vpc_id
@@ -110,7 +110,7 @@ module "public_load_balancer_sg" {
 
 module "public_load_balancer" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "~> 5.0"
+  version = "5.8.0"
 
   name = "${var.name}-public-lb"
 
